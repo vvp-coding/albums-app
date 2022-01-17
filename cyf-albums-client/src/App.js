@@ -24,9 +24,9 @@ function App() {
       <Main pad="small">
       <Box pad="large">
         <Grid columns={size !== 'small' ? 'small' : '100%'} gap="small">
-          {cards.map((card, index) => {
+          {cards.map((card) => {
             return(
-              <Card pad="large" key={index}>
+              <Card pad="large" key={card.albumId}>
                 <p>Artist: {card.artistName}</p>
                 <p>Album: {card.collectionName}</p>
                 <a href={card.url}>YouTube Link</a>
