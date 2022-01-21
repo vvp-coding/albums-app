@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const ViewCard = ({card, deleteAlbum, setEditMode}) => {
     return(
-        <Card pad="large" key={card.albumId}>
+        <Card pad="large">
             <p>Artist: {card.artistName}</p>
             <p>Album: {card.collectionName}</p>
             <a href={card.url}>YouTube Link</a>
@@ -41,7 +41,7 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
             <Box align="center" pad="medium">
                 <Button label="Save" onClick={() => {
                     saveChanges(cardData);
-                    }}/>
+                }}/>
             </Box>
             <Box align="center" pad="medium">
                 <Button label="Cancel" onClick={() => setEditMode(false)}/>
@@ -52,7 +52,6 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
 
 const AlbumCard = ({ card, getAlbums }) => {
     const [editMode, setEditMode] = useState(false);
-    // const [cardData, setCardData] = useState(null);
 
     const deleteAlbum = (albumId) => {
         fetch("http://localhost:4000/albums/" + albumId, {
@@ -68,20 +67,24 @@ const AlbumCard = ({ card, getAlbums }) => {
     const saveChanges = (cardData) => {
         fetch("http://localhost:4000/albums/" + cardData.albumId, {
           method: "PUT",
-          body: JSON.stringify(cardData)
+          body: JSON.stringify(cardData),
+          headers: {
+              "Content-type": "application/json"
+          }
         })
         .then(res => {
-          if(res.status <= 299 && res.status >= 200){
-            getAlbums();
-          }
+            if(res.status <= 299 && res.status >= 200) {
+                setEditMode(false);
+                getAlbums();
+            }
         })  
     };
 
     return (
         <>
-                { !editMode ? 
-                    <ViewCard card={card} setEditMode={setEditMode} deleteAlbum={deleteAlbum} /> : 
-                    <EditCard card={card} setEditMode={setEditMode} saveChanges={saveChanges} /> }
+            { !editMode ? 
+                <ViewCard card={card} setEditMode={setEditMode} deleteAlbum={deleteAlbum} /> : 
+                <EditCard card={card} setEditMode={setEditMode} saveChanges={saveChanges} /> }
         </>
     );
 }

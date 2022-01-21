@@ -24,7 +24,9 @@ function newID() {
 }
 
 app.post("/albums", function (request, response) {
-    albumsData.push(request.body);
+    const newAlbum = request.body;
+    newAlbum.albumId = 1 + Math.max(...albumsData.map(album => album.albumId))
+    albumsData.push(newAlbum);
     response.status(200).send("data received");
 });
 
