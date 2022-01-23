@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "small react client-server app",
   "private": true,
-  "workspaces": ["cyf-albums-client", "cyf-albums-server"],
+  "workspaces": ["client", "server"],
     "scripts": {
-    "dev": "concurrently --kill-others-on-fail \"cd cyf-albums-server && npm run dev\" \"cd cyf-albums-client && npm run start\"",
+    "dev": "concurrently --kill-others-on-fail \"cd server && npm run dev\" \"cd client && npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
