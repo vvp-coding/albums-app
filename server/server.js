@@ -3,27 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const { Pool } = require('pg');
 
-// get the full list of albums
-const albumsData = require("./albums");
-const { request } = require("express");
-
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-// Get an ID number that hasn't already been used in albums
-function newID() {
-    // Get list of IDs
-    let ids = albumsData.map(el => el.albumId).sort();
-    let nextId = 1;
-    // check if id string is taken
-    while(ids.includes(`${nextId}`)) {
-        nextId++;
-    }
-    return nextId;
-}
-
 
 const pool = new Pool({
     user: 'postgres',
@@ -51,7 +34,7 @@ app.post("/albums", function (request, response) {
 });
 
 app.delete("/albums/:albumId", function (request, response) {
-    let id = request.params.albumId;
+    const id = request.params.albumId;
     pool.query("DELETE FROM albums WHERE id=$1", [id])
         .then(() => response.send(`album removed`))
         .catch((e) => console.error(e));
@@ -71,7 +54,7 @@ app.put("/albums/:albumId", function (request, response) {
 });
 
 app.get("/albums", (request, response) => {
-    let id = request.query.id;
+    const id = request.query.id;
     
     if(id == undefined) {
         pool.query('SELECT * FROM albums', (error, result) => {
@@ -100,8 +83,17 @@ app.get("/albums", (request, response) => {
 });
 
 app.get("/albums/:albumId", function (request, response) {
-    let id = request.params.albumId;
-    response.status(200).send(albumsData.filter(album => id == album.albumId));
+    const id = request.params.albumId;
+    pool.query('SELECT * FROM albums WHERE id = $1', [id])
+        .then(result => response.status(200).send(result.rows.map(card => {
+            return {
+                artistName: card.artist_name,
+                collectionName: card.collection_name,
+                releaseDate: card.release_date,
+                url: card.url,
+                albumId: card.id
+            }
+        })))
 });
 
 app.listen(SERVER_PORT, () => console.log(`Server running on ${SERVER_PORT}`));
