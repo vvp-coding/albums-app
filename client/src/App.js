@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Header, Nav, Main, Box, Grid, ResponsiveContext, Text, Footer, Button } from 'grommet';
+import ResponsivePlayer from "react-player";
 import "./style.css"
 import AlbumCard from "./Components/AlbumCard";
 import NewAlbum from "./Components/NewAlbum";
@@ -8,6 +9,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const size = useContext(ResponsiveContext);
   const [open, setOpen] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
 
   const onClose = () => setOpen(undefined);
 
@@ -31,12 +33,13 @@ function App() {
         <Grid columns={size !== 'small' ? 'small' : '100%'} gap="small">
           {cards.map((card) => {
             return (
-              <AlbumCard card={card} getAlbums={getAlbums} key={card.albumId} />
+              <AlbumCard card={card} getAlbums={getAlbums} key={card.albumId} setOpenVideo={setOpenVideo} />
             );
           })}
         </Grid>
       </Box>
       { open && <NewAlbum onClose={onClose} getAlbums={getAlbums} /> }
+      { openVideo && <ResponsivePlayer id="player" url="" playing={true} controls={true} width='100%' height='100%' /> }
       </Main>
       <Footer background="light-4" justify="center" pad="small">
         <Text textAlign="center" size="small">
