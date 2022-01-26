@@ -26,7 +26,8 @@ app.post("/albums", function (request, response) {
                 collectionName: card.collection_name,
                 releaseDate: card.release_date,
                 url: card.url,
-                albumId: card.id
+                albumId: card.id,
+                genreName: card.genre_name
             };
         }));
     })
@@ -44,8 +45,8 @@ app.delete("/albums/:albumId", function (request, response) {
 app.put("/albums/:albumId", function (request, response) {
     const id = request.params.albumId;
     if(id !== undefined) {
-        pool.query("UPDATE albums SET artist_name=$1, collection_name=$2, release_date=$3, url=$4 WHERE id=$5", 
-                [request.body.artistName, request.body.collectionName, request.body.releaseDate, request.body.url, id])
+        pool.query("UPDATE albums SET artist_name=$1, collection_name=$2, genre_id=$3, release_date=$4, url=$5 WHERE id=$6", 
+                [request.body.artistName, request.body.collectionName, request.body.genreId, request.body.releaseDate, request.body.url, id])
             .then(() => response.send(`Updated data`))
             .catch((e) => console.error(e));
     } else {
@@ -55,28 +56,41 @@ app.put("/albums/:albumId", function (request, response) {
 
 app.get("/albums", (request, response) => {
     const id = request.query.id;
+    const query = `select 
+            a.id
+        ,   a.release_date
+        ,   a.artist_name
+        ,   a.collection_name
+        ,   a.url
+        ,   g."name" as genre_name
+        from albums a
+        join genre g
+        on g.id = a.genre_id
+        order by a.artist_name, a.collection_name, a.release_date`;
     
     if(id == undefined) {
-        pool.query('SELECT * FROM albums', (error, result) => {
+        pool.query(query, (error, result) => {
             response.status(200).send(result.rows.map(card => {
                 return {
                     artistName: card.artist_name,
                     collectionName: card.collection_name,
                     releaseDate: card.release_date,
                     url: card.url,
-                    albumId: card.id
+                    albumId: card.id,
+                    genreName: card.genre_name
                 };
             }));
         });
     } else {
-        pool.query('SELECT * FROM albums WHERE id = $1', [id])
+        pool.query( query + '\n WHERE id = $1', [id])
         .then(result => response.status(200).send(result.rows.map(card => {
             return {
                 artistName: card.artist_name,
                 collectionName: card.collection_name,
                 releaseDate: card.release_date,
                 url: card.url,
-                albumId: card.id
+                albumId: card.id,
+                genreName: card.genre_name
             }
         })))
     }
@@ -84,16 +98,35 @@ app.get("/albums", (request, response) => {
 
 app.get("/albums/:albumId", function (request, response) {
     const id = request.params.albumId;
-    pool.query('SELECT * FROM albums WHERE id = $1', [id])
+    const query = `select 
+        a.id
+        ,   a.release_date
+        ,   a.artist_name
+        ,   a.collection_name
+        ,   a.url
+        ,   g."name" as genre_name
+        from albums a
+        join genre g
+        on g.id = a.genre_id 
+        where 0=0
+        and a.id = $1`;
+
+    pool.query(query, [id])
         .then(result => response.status(200).send(result.rows.map(card => {
             return {
                 artistName: card.artist_name,
                 collectionName: card.collection_name,
                 releaseDate: card.release_date,
                 url: card.url,
-                albumId: card.id
+                albumId: card.id,
+                genreName: card.genre_name
             }
         })))
 });
+
+app.get("/genre", function (request, response){
+    pool.query("select * from genre")
+        .then(result => response.status(200).send(result.rows))
+})
 
 app.listen(SERVER_PORT, () => console.log(`Server running on ${SERVER_PORT}`));

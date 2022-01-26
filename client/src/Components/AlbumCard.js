@@ -1,11 +1,12 @@
-import {Card, Button, Box, TextInput} from "grommet"
-import { useState } from "react";
+import {Card, Button, Box, TextInput, Select} from "grommet"
+import { useState, useEffect } from "react";
 
 const ViewCard = ({card, deleteAlbum, setEditMode}) => {
     return(
         <Card pad="large">
             <p>Artist: {card.artistName}</p>
             <p>Album: {card.collectionName}</p>
+            <p>Genre: {card.genreName}</p>
             <a href={card.url}>YouTube Link</a>
             <Box align="center" pad="medium">
                 <Button label="Delete" onClick={() => deleteAlbum(card.albumId)}/>
@@ -18,13 +19,24 @@ const ViewCard = ({card, deleteAlbum, setEditMode}) => {
 }
 
 const EditCard = ({card, setEditMode, saveChanges}) => {
-    const [cardData, setCardData] = useState(card);
+    const [cardData, setCardData] = useState({...card});
+    const [options, setOptions] = useState([]);
+
+    const getGenre = () => fetch("http://localhost:4000/genre")
+                        .then(res => res.json())
+                        .then(data => setOptions(data));
 
     const updateData = (newData) => {
-        const copy = Object.assign({}, cardData);
-        Object.assign(copy, newData);
-        setCardData(copy);
+        setCardData({...cardData, ...newData});
     }
+
+    const addGenreId = (data) => {
+        return {...data, ...{genreId: options.find(genre => genre.name === data.genreName).id}}
+    }
+
+    useEffect(() => {
+        getGenre();
+      }, [])
 
     return (
         <Card pad="large">
@@ -38,13 +50,25 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
                     updateData({collectionName: e.target.value});
                 }} />
             </Box>
+            <Box width="medium">
+                <Select
+                    value={card.genreName}
+                    options={options.map(genre => genre.name)}
+                    onChange={({ value: nextValue }) => {
+                        updateData({ genreName: nextValue });
+                    }}
+                />
+            </Box>
             <Box align="center" pad="medium">
                 <Button label="Save" onClick={() => {
-                    saveChanges(cardData);
+                    saveChanges(addGenreId({...card, ...cardData}));
+
                 }}/>
             </Box>
             <Box align="center" pad="medium">
-                <Button label="Cancel" onClick={() => setEditMode(false)}/>
+                <Button label="Cancel" onClick={() => {
+                    setEditMode(false);
+                }}/>
             </Box>
         </Card>
     )
