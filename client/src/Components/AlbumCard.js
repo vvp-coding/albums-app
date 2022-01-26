@@ -30,7 +30,7 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
         setCardData({...cardData, ...newData});
     }
 
-    const addId = (data) => {
+    const addGenreId = (data) => {
         return {...data, ...{genreId: options.find(genre => genre.name === data.genreName).id}}
     }
 
@@ -61,7 +61,7 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
             </Box>
             <Box align="center" pad="medium">
                 <Button label="Save" onClick={() => {
-                    saveChanges(addId({...card, ...cardData}));
+                    saveChanges(addGenreId({...card, ...cardData}));
 
                 }}/>
             </Box>
