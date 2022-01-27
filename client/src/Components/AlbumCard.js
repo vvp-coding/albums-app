@@ -5,7 +5,7 @@ import { Trash, Edit, CirclePlay } from "grommet-icons";
 const ViewCard = ({card, deleteAlbum, setEditMode, toggleWatch}) => {
     return(
         <Card pad="large">
-            <Box direction="row" align="end" pad="small">
+            <Box direction="row" alignContent="end" justify="end" pad="small">
                 <Button icon={<CirclePlay />} hoverIndicator onClick={() => toggleWatch(true, card.url)} />
                 <Button icon={<Edit />} hoverIndicator onClick={() => setEditMode(true)}/>
                 <Button icon={<Trash color="red" />} hoverIndicator onClick={() => deleteAlbum(card.albumId)}/>
