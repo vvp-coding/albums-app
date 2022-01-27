@@ -6,14 +6,16 @@ const VideoPlayer = ({ url, toggleWatch }) => {
         <Layer
             full={false}
             position="center"
+            responsive={true}
             onClickOutside={() => toggleWatch(false, null)}
             onEsc={() => toggleWatch(false, null)}
         >   <Box
                 pad="small"
                 gap="small"
                 width="large"
-                height="medium"
-                fill
+                height="large"
+                responsive={true}
+                full
             >
                 <ResponsivePlayer id="player" url={url} playing={true} controls={true} width='100%' height='100%' />
             </Box>
