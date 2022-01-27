@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Header, Nav, Main, Box, Grid, Text, Footer, Button } from 'grommet';
 import "./style.css"
 import AlbumCard from "./Components/AlbumCard";
@@ -35,7 +35,7 @@ function App() {
       </Header>
       <Main pad="small">
       <Box pad="large">
-        <Grid columns="30%" gap="small">
+        <Grid columns="30%" gap="medium">
           {cards.map((card) => {
             return (
               <AlbumCard card={card} getAlbums={getAlbums} key={card.albumId} toggleWatch={toggleWatch} />
