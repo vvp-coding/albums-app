@@ -1,19 +1,18 @@
 import {Card, Button, Box, TextInput, Select} from "grommet"
 import { useState, useEffect } from "react";
+import { Trash, Edit, CirclePlay } from "grommet-icons";
 
 const ViewCard = ({card, deleteAlbum, setEditMode, toggleWatch}) => {
     return(
         <Card pad="large">
+            <Box direction="row" align="end" pad="small">
+                <Button icon={<CirclePlay />} hoverIndicator onClick={() => toggleWatch(true, card.url)} />
+                <Button icon={<Edit />} hoverIndicator onClick={() => setEditMode(true)}/>
+                <Button icon={<Trash color="red" />} hoverIndicator onClick={() => deleteAlbum(card.albumId)}/>
+            </Box>
             <p>Artist: {card.artistName}</p>
             <p>Album: {card.collectionName}</p>
             <p>Genre: {card.genreName}</p>
-            <Button onClick={() => toggleWatch(true, card.url)}>Watch Video</Button>
-            <Box align="center" pad="medium">
-                <Button label="Delete" onClick={() => deleteAlbum(card.albumId)}/>
-            </Box>
-            <Box align="center" pad="medium">
-                <Button label="Edit" onClick={() => setEditMode(true)}/>
-            </Box>
         </Card>
     )
 }

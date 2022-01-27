@@ -64,7 +64,7 @@ app.get("/albums", (request, response) => {
         ,   a.url
         ,   g."name" as genre_name
         from albums a
-        join genre g
+        left join genre g
         on g.id = a.genre_id
         order by a.artist_name, a.collection_name, a.release_date`;
     
@@ -106,7 +106,7 @@ app.get("/albums/:albumId", function (request, response) {
         ,   a.url
         ,   g."name" as genre_name
         from albums a
-        join genre g
+        left join genre g
         on g.id = a.genre_id 
         where 0=0
         and a.id = $1`;
