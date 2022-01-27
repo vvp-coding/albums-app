@@ -1,15 +1,23 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { Header, Nav, Main, Box, Grid, ResponsiveContext, Text, Footer, Button } from 'grommet';
 import "./style.css"
 import AlbumCard from "./Components/AlbumCard";
 import NewAlbum from "./Components/NewAlbum";
+import VideoPlayer from "./Components/VideoPlayer";
 
 function App() {
   const [cards, setCards] = useState([]);
   const size = useContext(ResponsiveContext);
   const [open, setOpen] = useState(false);
+  const [watchVideo, setWatchVideo] = useState(false);
+  const videoLink = useRef(null);
 
   const onClose = () => setOpen(undefined);
+
+  const toggleWatch = (isWatching, url) => {
+    videoLink.current = url;
+    setWatchVideo(isWatching);
+  };
 
   const getAlbums=() => fetch("http://localhost:4000/albums")
                     .then(res => res.json())
@@ -31,12 +39,13 @@ function App() {
         <Grid columns={size !== 'small' ? 'small' : '100%'} gap="small">
           {cards.map((card) => {
             return (
-              <AlbumCard card={card} getAlbums={getAlbums} key={card.albumId} />
+              <AlbumCard card={card} getAlbums={getAlbums} key={card.albumId} toggleWatch={toggleWatch} />
             );
           })}
         </Grid>
       </Box>
       { open && <NewAlbum onClose={onClose} getAlbums={getAlbums} /> }
+      { watchVideo && <VideoPlayer url={videoLink.current} toggleWatch={toggleWatch} /> }
       </Main>
       <Footer background="light-4" justify="center" pad="small">
         <Text textAlign="center" size="small">

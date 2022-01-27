@@ -36,10 +36,10 @@ const NewAlbum = ({onClose, getAlbums}) => {
 
     return (
         <Layer
-        full={false}
-        position="center"
-        onClickOutside={onClose}
-        onEsc={onClose}
+            full={false}
+            position="center"
+            onClickOutside={onClose}
+            onEsc={onClose}
         >
         <Box
             pad="medium"

@@ -1,13 +1,13 @@
 import {Card, Button, Box, TextInput, Select} from "grommet"
 import { useState, useEffect } from "react";
 
-const ViewCard = ({card, deleteAlbum, setEditMode}) => {
+const ViewCard = ({card, deleteAlbum, setEditMode, toggleWatch}) => {
     return(
         <Card pad="large">
             <p>Artist: {card.artistName}</p>
             <p>Album: {card.collectionName}</p>
             <p>Genre: {card.genreName}</p>
-            <a href={card.url}>YouTube Link</a>
+            <Button onClick={() => toggleWatch(true, card.url)}>Watch Video</Button>
             <Box align="center" pad="medium">
                 <Button label="Delete" onClick={() => deleteAlbum(card.albumId)}/>
             </Box>
@@ -74,7 +74,7 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
     )
 }
 
-const AlbumCard = ({ card, getAlbums }) => {
+const AlbumCard = ({ card, getAlbums, toggleWatch}) => {
     const [editMode, setEditMode] = useState(false);
 
     const deleteAlbum = (albumId) => {
@@ -107,7 +107,7 @@ const AlbumCard = ({ card, getAlbums }) => {
     return (
         <>
             { !editMode ? 
-                <ViewCard card={card} setEditMode={setEditMode} deleteAlbum={deleteAlbum} /> : 
+                <ViewCard card={card} setEditMode={setEditMode} deleteAlbum={deleteAlbum} toggleWatch={toggleWatch} /> : 
                 <EditCard card={card} setEditMode={setEditMode} saveChanges={saveChanges} /> }
         </>
     );
