@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { Header, Nav, Main, Box, Grid, ResponsiveContext, Text, Footer, Button } from 'grommet';
+import { Header, Nav, Main, Box, Grid, Text, Footer, Button } from 'grommet';
 import "./style.css"
 import AlbumCard from "./Components/AlbumCard";
 import NewAlbum from "./Components/NewAlbum";
@@ -7,7 +7,6 @@ import VideoPlayer from "./Components/VideoPlayer";
 
 function App() {
   const [cards, setCards] = useState([]);
-  const size = useContext(ResponsiveContext);
   const [open, setOpen] = useState(false);
   const [watchVideo, setWatchVideo] = useState(false);
   const videoLink = useRef(null);
@@ -19,7 +18,7 @@ function App() {
     setWatchVideo(isWatching);
   };
 
-  const getAlbums=() => fetch("http://localhost:4000/albums")
+  const getAlbums = () => fetch("http://localhost:4000/albums")
                     .then(res => res.json())
                     .then(data => setCards(data))
 
@@ -36,7 +35,7 @@ function App() {
       </Header>
       <Main pad="small">
       <Box pad="large">
-        <Grid columns={size !== 'small' ? 'small' : '100%'} gap="small">
+        <Grid columns="30%" gap="small">
           {cards.map((card) => {
             return (
               <AlbumCard card={card} getAlbums={getAlbums} key={card.albumId} toggleWatch={toggleWatch} />
