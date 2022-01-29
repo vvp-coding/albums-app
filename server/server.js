@@ -17,8 +17,8 @@ const pool = new Pool({
 });
 
 app.post("/albums", function (request, response) {
-    pool.query("INSERT INTO albums (artist_name, collection_name, release_date, url) VALUES ($1, $2, $3, $4)", 
-        [request.body.artistName, request.body.collectionName, request.body.releaseDate, request.body.url])
+    pool.query("INSERT INTO albums (artist_name, collection_name, release_date, url, genre_id) VALUES ($1, $2, $3, $4, $5)", 
+        [request.body.artistName, request.body.collectionName, request.body.releaseDate, request.body.url, request.body.genreId])
     .then(result => {
         response.status(200).send(result.rows.map(card => {
             return {
