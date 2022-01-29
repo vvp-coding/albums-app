@@ -18,10 +18,6 @@ const NewAlbum = ({onClose, getAlbums}) => {
         getGenre();
         }, [])
 
-    const onChange = (event) => {
-        const nextDate = event.value;
-        setDate(nextDate);
-    };
 
     const post = () => {
         fetch("http://localhost:4000/albums", {
@@ -83,7 +79,7 @@ const NewAlbum = ({onClose, getAlbums}) => {
                     Url:<TextInput value={url} onChange={(e) => setUrl(e.target.value)} />
                 </Box>
                 <Box>
-                    Release Date:<DateInput format="dd/mm/yyyy" value={date} onChange={onChange} />
+                    Release Date:<DateInput format="dd/mm/yyyy" value={date} onChange={(e) => setDate(e.value)} />
                 </Box>
                 <Box alignSelf="center" pad="medium" direction="row">
                     <Button label="Save" margin={{right: "10px"}} onClick={() => {

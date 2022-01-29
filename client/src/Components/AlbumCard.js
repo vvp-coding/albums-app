@@ -53,8 +53,8 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
                 <Select
                     value={card.genreName}
                     options={options.map(genre => genre.name)}
-                    onChange={({ value: nextValue }) => {
-                        updateData({ genreName: nextValue });
+                    onChange={(e) => {
+                        updateData({ genreName: e.target.value });
                     }}
                 />
             </Box>
