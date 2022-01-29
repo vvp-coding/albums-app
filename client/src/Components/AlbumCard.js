@@ -40,9 +40,12 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
     return (
         <Card pad="large">
             <Box width="medium">
-                <TextInput value={cardData.artistName} onChange={(e) => {
-                    updateData({artistName: e.target.value});
-                }} />
+                <TextInput 
+                    value={cardData.artistName} 
+                    onChange={(e) => {
+                        updateData({artistName: e.target.value});
+                    }} 
+                />
             </Box>
             <Box width="medium">
                 <TextInput value={cardData.collectionName} onChange={(e) => {
@@ -51,7 +54,7 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
             </Box>
             <Box width="medium">
                 <Select
-                    value={card.genreName}
+                    value={cardData.genreName}
                     options={options.map(genre => genre.name)}
                     onChange={(e) => {
                         updateData({ genreName: e.target.value });
