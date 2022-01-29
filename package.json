@@ -8,7 +8,7 @@
     "server"
   ],
   "scripts": {
-    "dev": "concurrently --kill-others-on-fail \"cd server && npm run dev\" \"cd client && npm run start\"",
+    "dev": "concurrently --kill-others-on-fail -n \"server,client\" \"cd server && npm run dev\" \"cd client && npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
