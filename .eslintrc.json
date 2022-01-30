@@ -1,0 +1,12 @@
+{
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"parser": "babel-eslint",
+	"rules": {
+		"indent": "off",
+		"operator-linebreak": "off",
+		"linebreak-style": 0
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"name": "Albums",
+	"description": "VVP Coding / Albums app",
+	"stack": "heroku-20",
+	"addons": [
+		{
+			"plan": "heroku-postgresql:hobby-dev"
+		}
+	]
+}
