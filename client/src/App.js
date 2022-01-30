@@ -22,11 +22,11 @@ function App() {
     setWatchVideo(isWatching);
   };
 
-  const getAlbums = () => fetch("http://localhost:4000/albums")
+  const getAlbums = () => fetch("/api/albums")
                     .then(res => res.json())
                     .then(data => setCards(data))
 
-  const searchAlbums = (text) => fetch("http://localhost:4000/search?search=" + text)
+  const searchAlbums = (text) => fetch("/api/search?search=" + text)
                                   .then(res => res.json())
                                   .then(data => setCards(data))
 
