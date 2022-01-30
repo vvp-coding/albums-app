@@ -54,6 +54,37 @@ app.put("/albums/:albumId", function (request, response) {
     }
 });
 
+app.get("/search", function (request, response){
+    const search = request.query.search;
+    const query = `
+            select 
+            a.id
+        ,   a.release_date
+        ,   a.artist_name
+        ,   a.collection_name
+        ,   a.url
+        ,   g."name" as genre_name
+        from albums a
+        left join genre g
+        on g.id = a.genre_id
+        where lower(artist_name) like lower('%' || $1 || '%')
+	    or lower(collection_name) like lower('%' || $1 || '%')
+        order by a.artist_name, a.collection_name, a.release_date`;
+
+    pool.query(query, [search])
+    .then(result => response.status(200).send(result.rows.map(card => {
+        return {
+            artistName: card.artist_name,
+            collectionName: card.collection_name,
+            releaseDate: card.release_date,
+            url: card.url,
+            albumId: card.id,
+            genreName: card.genre_name
+        }
+    })));
+        
+});
+
 app.get("/albums", (request, response) => {
     const id = request.query.id;
     const query = `select 

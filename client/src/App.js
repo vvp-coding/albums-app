@@ -1,17 +1,21 @@
 import { useEffect, useState, useRef } from "react";
-import { Header, Nav, Main, Box, Grid, Text, Footer, Button } from 'grommet';
+import { Header, Nav, Main, Box, Grid, Text, Footer, Button} from 'grommet';
 import "./style.css"
 import AlbumCard from "./Components/AlbumCard";
 import NewAlbum from "./Components/NewAlbum";
 import VideoPlayer from "./Components/VideoPlayer";
+import SearchAlbums from "./Components/SearchAlbums";
 
 function App() {
   const [cards, setCards] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [openAlbum, setOpenAlbum] = useState(false);
+  const [searching, setSearching] = useState(false);
   const [watchVideo, setWatchVideo] = useState(false);
   const videoLink = useRef(null);
 
-  const onClose = () => setOpen(undefined);
+  const onClose = () => setOpenAlbum(false);
+
+  const stopSearching = () => setSearching(false);
 
   const toggleWatch = (isWatching, url) => {
     videoLink.current = url;
@@ -22,6 +26,10 @@ function App() {
                     .then(res => res.json())
                     .then(data => setCards(data))
 
+  const searchAlbums = (text) => fetch("http://localhost:4000/search?search=" + text)
+                                  .then(res => res.json())
+                                  .then(data => setCards(data))
+
   useEffect(() => {
     getAlbums();
   }, [])
@@ -30,7 +38,15 @@ function App() {
     <>
       <Header background="light-4" pad="small">
         <Nav direction="row">
-          <Button label="Add Album" onClick={() => setOpen(true)} />
+          <Box>
+            <Button label="Add Album" onClick={() => setOpenAlbum(true)} />
+          </Box>
+          <Box>
+            <Button label="Search" onClick={() => {
+              setSearching(true)
+  
+            }} />
+          </Box>
         </Nav>
       </Header>
       <Main pad="small">
@@ -43,8 +59,9 @@ function App() {
           })}
         </Grid>
       </Box>
-      { open && <NewAlbum onClose={onClose} getAlbums={getAlbums} /> }
+      { openAlbum && <NewAlbum onClose={onClose} getAlbums={getAlbums} /> }
       { watchVideo && <VideoPlayer url={videoLink.current} toggleWatch={toggleWatch} /> }
+      {searching && <SearchAlbums stopSearching={stopSearching} searchAlbums={searchAlbums} />}
       </Main>
       <Footer background="light-4" justify="center" pad="small">
         <Text textAlign="center" size="small">
