@@ -22,6 +22,14 @@ export const httpsOnly = () => (req, res, next) => {
 	next();
 };
 
+export const permissionsPolicy = () => (req, res, next) => {
+	res.setHeader(
+		"Permissions-Policy",
+		"interest-cohort=()"
+	  );
+	  next();
+};
+
 export const logErrors = () => (err, _, res, next) => {
 	if (res.headersSent) {
 		return next(err);
