@@ -7,8 +7,9 @@ export const configuredHelmet = () =>
 			directives: {
 				defaultSrc: ["'self'"],
 				objectSrc: ["'none'"],
-				scriptSrc: ["'self'", "unpkg.com"],
+				scriptSrc: ["'self'", "unpkg.com", "*.youtube.com"],
 				styleSrc: ["'self'", "https: 'unsafe-inline'"],
+				frameSrc: ["'self'", "*.youtube.com"],
 				upgradeInsecureRequests: [],
 			},
 		},
