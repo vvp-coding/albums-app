@@ -21,7 +21,7 @@ const EditCard = ({card, setEditMode, saveChanges}) => {
     const [cardData, setCardData] = useState({...card});
     const [options, setOptions] = useState([]);
 
-    const getGenre = () => fetch("http://localhost:4000/genre")
+    const getGenre = () => fetch("/api/genre")
                         .then(res => res.json())
                         .then(data => setOptions(data));
 
@@ -80,7 +80,7 @@ const AlbumCard = ({ card, getAlbums, toggleWatch}) => {
     const [editMode, setEditMode] = useState(false);
 
     const deleteAlbum = (albumId) => {
-        fetch("http://localhost:4000/albums/" + albumId, {
+        fetch("/api/albums/" + albumId, {
           method: "DELETE"
         })
         .then(res => {
@@ -91,7 +91,7 @@ const AlbumCard = ({ card, getAlbums, toggleWatch}) => {
     };
 
     const saveChanges = (cardData) => {
-        fetch("http://localhost:4000/albums/" + cardData.albumId, {
+        fetch("/api/albums/" + cardData.albumId, {
           method: "PUT",
           body: JSON.stringify(cardData),
           headers: {

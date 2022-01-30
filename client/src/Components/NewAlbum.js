@@ -10,7 +10,7 @@ const NewAlbum = ({onClose, getAlbums}) => {
     const [genre, setGenre] = useState("");
     const [options, setOptions] = useState([]);
 
-    const getGenre = () => fetch("http://localhost:4000/genre")
+    const getGenre = () => fetch("/api/genre")
                         .then(res => res.json())
                         .then(data => setOptions(data));
 
@@ -20,7 +20,7 @@ const NewAlbum = ({onClose, getAlbums}) => {
 
 
     const post = () => {
-        fetch("http://localhost:4000/albums", {
+        fetch("/api/albums", {
             method: "POST",
             body: JSON.stringify({
                 artistName: artist,
